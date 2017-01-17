@@ -17,9 +17,9 @@ const {
 const TestEnum = new GraphQLEnumType({
     name: 'TestEnum',
     values: {
-        RED: { description: 'A rosy color' },
-        GREEN: { description: 'The color of martians and slime' },
-        BLUE: { description: 'A feeling you might have if you can\'t use GraphQL' },
+        RED: {description: 'A rosy color'},
+        GREEN: {description: 'The color of martians and slime'},
+        BLUE: {description: 'A feeling you might have if you can\'t use GraphQL'},
     }
 });
 
@@ -30,20 +30,20 @@ const TestInputObject = new GraphQLInputObjectType({
             type: GraphQLString,
             description: 'Repeats back this string'
         },
-        int: { type: GraphQLInt },
-        float: { type: GraphQLFloat },
-        boolean: { type: GraphQLBoolean },
-        id: { type: GraphQLID },
-        enum: { type: TestEnum },
-        object: { type: TestInputObject },
+        int: {type: GraphQLInt},
+        float: {type: GraphQLFloat},
+        boolean: {type: GraphQLBoolean},
+        id: {type: GraphQLID},
+        enum: {type: TestEnum},
+        object: {type: TestInputObject},
         // List
-        listString: { type: new GraphQLList(GraphQLString) },
-        listInt: { type: new GraphQLList(GraphQLInt) },
-        listFloat: { type: new GraphQLList(GraphQLFloat) },
-        listBoolean: { type: new GraphQLList(GraphQLBoolean) },
-        listID: { type: new GraphQLList(GraphQLID) },
-        listEnum: { type: new GraphQLList(TestEnum) },
-        listObject: { type: new GraphQLList(TestInputObject) },
+        listString: {type: new GraphQLList(GraphQLString)},
+        listInt: {type: new GraphQLList(GraphQLInt)},
+        listFloat: {type: new GraphQLList(GraphQLFloat)},
+        listBoolean: {type: new GraphQLList(GraphQLBoolean)},
+        listID: {type: new GraphQLList(GraphQLID)},
+        listEnum: {type: new GraphQLList(TestEnum)},
+        listObject: {type: new GraphQLList(TestInputObject)},
     })
 });
 
@@ -70,10 +70,12 @@ const UnionFirst = new GraphQLObjectType({
         },
         first: {
             type: new GraphQLList(TestInterface),
-            resolve: () => { return true; }
+            resolve: () => {
+                return true;
+            }
         }
     }),
-    interfaces: [ TestInterface ]
+    interfaces: [TestInterface]
 });
 
 const UnionSecond = new GraphQLObjectType({
@@ -85,22 +87,24 @@ const UnionSecond = new GraphQLObjectType({
         },
         second: {
             type: TestInterface,
-            resolve: () => { return false; }
+            resolve: () => {
+                return false;
+            }
         }
     }),
-    interfaces: [ TestInterface ]
+    interfaces: [TestInterface]
 });
 
 const TestUnion = new GraphQLUnionType({
     name: 'TestUnion',
-    types: [ UnionFirst, UnionSecond ],
+    types: [UnionFirst, UnionSecond],
     resolveType() {
         return UnionFirst;
     }
 });
 
 const TestType = new GraphQLObjectType({
-    name: 'Test',
+    name: 'Root',
     fields: () => ({
         test: {
             type: TestType,
@@ -130,25 +134,72 @@ const TestType = new GraphQLObjectType({
                 return JSON.stringify(args);
             },
             args: {
-                string: { type: GraphQLString },
-                int: { type: GraphQLInt },
-                float: { type: GraphQLFloat },
-                boolean: { type: GraphQLBoolean },
-                id: { type: GraphQLID },
-                enum: { type: TestEnum },
-                object: { type: TestInputObject },
+                string: {type: GraphQLString},
+                int: {type: GraphQLInt},
+                float: {type: GraphQLFloat},
+                boolean: {type: GraphQLBoolean},
+                id: {type: GraphQLID},
+                enum: {type: TestEnum},
+                object: {type: TestInputObject},
                 // List
-                listString: { type: new GraphQLList(GraphQLString) },
-                listInt: { type: new GraphQLList(GraphQLInt) },
-                listFloat: { type: new GraphQLList(GraphQLFloat) },
-                listBoolean: { type: new GraphQLList(GraphQLBoolean) },
-                listID: { type: new GraphQLList(GraphQLID) },
-                listEnum: { type: new GraphQLList(TestEnum) },
-                listObject: { type: new GraphQLList(TestInputObject) },
+                listString: {type: new GraphQLList(GraphQLString)},
+                listInt: {type: new GraphQLList(GraphQLInt)},
+                listFloat: {type: new GraphQLList(GraphQLFloat)},
+                listBoolean: {type: new GraphQLList(GraphQLBoolean)},
+                listID: {type: new GraphQLList(GraphQLID)},
+                listEnum: {type: new GraphQLList(TestEnum)},
+                listObject: {type: new GraphQLList(TestInputObject)},
             }
         },
+        user: {
+            type: User,
+            description: 'Polish Bank User',
+            args: {
+                id: {
+                    type: GraphQLInt
+                }
+            },
+            resolve: (value, args) => {
+                console.log('value', value)
+                console.log('args', args.id)
+                const result = [
+                    {
+                        name: "Daniel",
+                        age: 23,
+                        id: 1
+                    },
+                    {
+                        name: "Arkadiusz",
+                        age: 12,
+                        id: 2
+                    },
+                    {
+                        name: "Igor",
+                        age: 45,
+                        id: 3
+                    }
+                ].filter(item =>{
+                    console.log('item', item.id == args.id)
+                    return  item.id == args.id
+                })[0];
+                return result
+            }
+        }
     })
 });
+
+const User = new GraphQLObjectType({
+    name: 'User',
+    fields: () => ({
+        name: {
+            type: GraphQLString,
+            description: 'User Name'
+        },
+        age: {
+            type: GraphQLInt,
+        }
+    })
+})
 
 const TestMutationType = new GraphQLObjectType({
     name: 'MutationType',
@@ -158,7 +209,7 @@ const TestMutationType = new GraphQLObjectType({
             type: GraphQLString,
             description: 'Set the string field',
             args: {
-                value: { type: GraphQLString }
+                value: {type: GraphQLString}
             }
         }
     }
@@ -172,7 +223,7 @@ const TestSubscriptionType = new GraphQLObjectType({
             type: TestType,
             description: 'Subscribe to the test type',
             args: {
-                id: { type: GraphQLString }
+                id: {type: GraphQLString}
             }
         }
     }
@@ -183,5 +234,19 @@ const myTestSchema = new GraphQLSchema({
     mutation: TestMutationType,
     subscription: TestSubscriptionType
 });
+
+/**
+ run server // npm start
+ http://localhost:3000/graphiql/
+ query{
+  user(id:3){
+    name
+    age
+  }
+}
+
+
+ */
+
 
 module.exports = myTestSchema;

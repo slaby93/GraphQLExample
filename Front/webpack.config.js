@@ -15,7 +15,8 @@ const config = {
                 query: {
                     presets: ['es2015', 'react']
                 }
-            }
+            },
+            {test: /(\.css|\.scss)$/, loaders: ['style', 'css', 'sass']}
         ]
     }
 }
