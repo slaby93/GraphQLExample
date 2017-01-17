@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Front/Front.iml" filepath="$PROJECT_DIR$/Front/Front.iml" />
-      <module fileurl="file://$PROJECT_DIR$/GraphQL/GraphQL.iml" filepath="$PROJECT_DIR$/GraphQL/GraphQL.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Server/Server.iml" filepath="$PROJECT_DIR$/Server/Server.iml" />
     </modules>
   </component>
 </project>
