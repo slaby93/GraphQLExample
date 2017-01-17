@@ -1,4 +1,4 @@
-
+# GraphQL + GraphiQL sample integration ( from scratch )
 
 ## Installation
 Open /Server folder
